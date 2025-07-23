@@ -1,0 +1,95 @@
+/* style.css */
+body {
+  background-color: #0a0a0a;
+  color: #00ff55;
+  font-family: 'Share Tech Mono', monospace;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+header {
+  background: #111;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 0 10px #00ff55;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  color: #00ff55;
+  text-shadow: 0 0 5px #00ff55;
+}
+
+#cursor {
+  color: #00ff55;
+  animation: blink 0.8s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+p {
+  color: #aaffaa;
+}
+
+nav ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  background: #111;
+  padding: 1rem 0;
+  margin: 0;
+}
+
+nav li {
+  margin: 0 1.5rem;
+}
+
+nav a {
+  color: #00ff55;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+nav a:hover {
+  color: #88ff88;
+  text-shadow: 0 0 10px #00ff55;
+}
+
+section {
+  padding: 2rem 10%;
+  border-bottom: 1px solid #222;
+}
+
+h2 {
+  color: #00ff55;
+  text-shadow: 0 0 5px #00ff55;
+  margin-bottom: 1rem;
+}
+
+ul li::marker {
+  color: #00ff55;
+}
+
+a {
+  color: #00ff55;
+}
+
+a:hover {
+  color: #aaffaa;
+  text-shadow: 0 0 5px #00ff55;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: #111;
+  color: #888;
+  border-top: 1px solid #222;
+}

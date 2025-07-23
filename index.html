@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Michele Messina – Cybersecurity Offensive</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const text = "Michele Messina – Cybersecurity Offensiva";
+      const header = document.getElementById("terminal-title");
+      let i = 0;
+      function typeWriter() {
+        if (i < text.length) {
+          header.innerHTML += text.charAt(i);
+          i++;
+          setTimeout(typeWriter, 75);
+        } else {
+          document.getElementById("cursor").style.display = 'inline-block';
+        }
+      }
+      typeWriter();
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <h1><span id="terminal-title"></span><span id="cursor">|</span></h1>
+    <p>Appassionato di Cybersecurity Offensiva & Penetration Testing</p>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#chi-sono">Chi Sono</a></li>
+      <li><a href="#competenze">Competenze</a></li>
+      <li><a href="#progetti">Progetti</a></li>
+      <li><a href="#contatti">Contatti</a></li>
+    </ul>
+  </nav>
+
+  <section id="chi-sono">
+    <h2>Chi Sono</h2>
+    <p>
+      Studio attivamente il Penetration Testing da gennaio 2025. Sono convinto che la miglior difesa sia l’attacco. Simulo attacchi, analizzo vulnerabilità reali e progetto strumenti per migliorare la sicurezza aziendale. Ogni giorno imparo, anche leggendo report di attacchi recenti prima di dormire.
+    </p>
+  </section>
+
+  <section id="competenze">
+    <h2>Competenze Tecniche</h2>
+    <ul>
+      <li>Recon: Subfinder, Amass, Gobuster, Dirsearch, DNSrecon, Nmap, theHarvester...</li>
+      <li>Exploiting: LFI, XSS, SQLi, Buffer Overflow con GDB</li>
+      <li>Tool: Burp Suite, sqlmap, Hydra, FFUF, Nikto, Metasploit, nuclei</li>
+      <li>Lingue: Python, Bash, SQL, C</li>
+      <li>Esperienza con HackTheBox, CTF e bug bounty</li>
+    </ul>
+  </section>
+
+  <section id="progetti">
+    <h2>Progetti</h2>
+    <ul>
+      <li> <strong>Rate Limit Bypass</strong> – Script Python multi-threading</li>
+      <li> <strong>DoS Payment System</strong> – Scoperta vulnerabilità e disclosure</li>
+      <li> <strong>Bug GraphQL</strong> – Ampliamento scope autenticazione</li>
+      <li> <strong>CVE-2022-22720</strong> – Apache HTTP/2 Denial of Service</li>
+    </ul>
+  </section>
+
+  <section id="contatti">
+    <h2>Contatti</h2>
+    <p>Email: <a href="mailto:mikimegov@gmail.com">mikimegov@gmail.com</a></p>
+    <p><a href="https://github.com/MicheleMessina-debug">GitHub</a> | <a href="https://www.linkedin.com/in/michele-messina-518a55278/">LinkedIn</a></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Michele Messina</p>
+  </footer>
+</body>
+</html>
