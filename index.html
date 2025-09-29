@@ -1,13 +1,117 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Michele Messina – Cybersecurity Offensive</title>
-  <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0f13;
+      --card:#0f1720;
+      --accent:#00e6a8;
+      --muted:#9aa4b2;
+      color-scheme: dark;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg,#071019 0%, #08121a 100%);
+      color:#e6eef6;
+      padding:24px;
+      line-height:1.5;
+    }
+    header{
+      text-align:center;
+      margin-bottom:18px;
+    }
+    h1{
+      font-family: 'Share Tech Mono', monospace;
+      font-size:1.6rem;
+      margin:0;
+      letter-spacing:0.6px;
+    }
+    #cursor{display:none; margin-left:4px; opacity:0.85}
+    p.lead{color:var(--muted); margin-top:6px}
+    nav{
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      margin:18px 0 28px;
+      flex-wrap:wrap;
+    }
+    nav button{
+      background:transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.06);
+      padding:8px 12px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+      transition: all .18s ease;
+    }
+    nav button:hover{ transform:translateY(-2px); color:var(--accent); box-shadow:0 6px 18px rgba(0,0,0,0.6) }
+    nav button[aria-expanded="true"]{
+      background:linear-gradient(90deg, rgba(0,230,168,0.08), rgba(0,230,168,0.02));
+      color:var(--accent);
+      border-color: rgba(0,230,168,0.18);
+    }
+
+    /* container per le sezioni */
+    main{
+      max-width:900px;
+      margin:0 auto 40px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;
+      padding:20px;
+      box-shadow: 0 10px 30px rgba(2,6,12,0.6);
+    }
+
+    /* sezioni nascoste / visibili */
+    section{
+      display:none; /* nascosto di default */
+      opacity:0;
+      transform: translateY(8px);
+      transition: opacity .28s ease, transform .28s ease;
+      padding:8px 4px;
+    }
+    section[aria-hidden="false"]{
+      display:block;
+      opacity:1;
+      transform: translateY(0);
+    }
+   .important-note {
+      display: inline-block;
+      background: #111;
+      color: #ff4d4d; /* rosso avviso */
+      padding: 1rem 1.2rem;
+      border: 2px solid #ff4d4d;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+      transform: rotate(-2deg); /* effetto che “pende” */
+      margin-top: 1rem;
+      text-align: center;
+      max-width: 600px;
+}
+
+.important-note::before {
+  content: "⚠️ "; /* simbolo avviso */
+}
+
+
+    /* stile semplice lista e footer */
+    ul{margin:8px 0 16px 20px}
+    footer{ text-align:center; color:var(--muted); margin-top:10px; font-size:0.9rem }
+    a{color:var(--accent)}
+    /* accessibilità: focus ring per keyboard */
+    button:focus { outline: 3px solid rgba(0,230,168,0.14); outline-offset:3px; }
+  </style>
+
   <script>
     document.addEventListener("DOMContentLoaded", function () {
+      // TYPEWRITER title
       const text = "Michele Messina – Cybersecurity Offensive";
       const header = document.getElementById("terminal-title");
       let i = 0;
@@ -15,79 +119,121 @@
         if (i < text.length) {
           header.innerHTML += text.charAt(i);
           i++;
-          setTimeout(typeWriter, 75);
+          setTimeout(typeWriter, 55);
         } else {
           document.getElementById("cursor").style.display = 'inline-block';
         }
       }
       typeWriter();
+
+      // SHOW/HIDE SECTIONS logic
+      const buttons = document.querySelectorAll('nav button[data-target]');
+      const sections = document.querySelectorAll('main section[id]');
+      // hide all sections on load
+      sections.forEach(s => {
+        s.setAttribute('aria-hidden', 'true');
+        s.style.display = 'none'; // ensure no flash before script
+      });
+
+      function showSection(targetId){
+        sections.forEach(s => {
+          const isTarget = s.id === targetId;
+          if(isTarget){
+            s.setAttribute('aria-hidden', 'false');
+            s.style.display = ''; // restore stylesheet display:block from CSS rule
+            // scroll into view for UX
+            s.focus && s.focus();
+          } else {
+            s.setAttribute('aria-hidden', 'true');
+            // keep display none after a tiny timeout to allow transition (if needed)
+            // but here CSS toggles opacity; we remove from flow for cleanliness
+            s.style.display = 'none';
+          }
+        });
+        // update button aria-expanded
+        buttons.forEach(b => {
+          b.setAttribute('aria-expanded', b.dataset.target === targetId ? 'true' : 'false');
+        });
+        // update URL hash without jumping
+        history.replaceState(null, '', '#'+targetId);
+      }
+
+      // click handlers
+      buttons.forEach(b => {
+        b.addEventListener('click', () => {
+          const target = b.dataset.target;
+          showSection(target);
+        });
+      });
+
+      // support deep linking: if URL has a hash that matches an id, show it
+      const hash = location.hash.replace('#','');
+      if(hash){
+        const match = Array.from(sections).find(s => s.id === hash);
+        if(match){
+          showSection(hash);
+        }
+      }
     });
   </script>
 </head>
 <body>
   <header>
     <h1><span id="terminal-title"></span><span id="cursor">|</span></h1>
-    <p>Appassionato di Cybersecurity Offensiva & Penetration Testing</p>
+    <p class="lead">Appassionato di Cybersecurity Offensiva &amp; Penetration Testing</p>
   </header>
 
-  <nav>
-    <ul>
-      <li><a href="#chi-sono">Chi Sono</a></li>
-      <li><a href="#competenze">Competenze</a></li>
-      <li><a href="#progetti">Progetti</a></li>
-      <li><a href="#contatti">Contatti</a></li>
-    </ul>
+  <nav aria-label="Sezioni principali">
+    <!-- uso button con data-target per controllare le sezioni -->
+    <button type="button" data-target="chi-sono" aria-expanded="false">Chi Sono</button>
+    <button type="button" data-target="competenze" aria-expanded="false">Competenze</button>
+    <button type="button" data-target="nota" aria-expanded="false">Nota</button>
+    <button type="button" data-target="contatti" aria-expanded="false">Contatti</button>
   </nav>
 
-  <section id="chi-sono">
-    <h2>Chi Sono</h2>
-    <p>
-      Studio attivamente il Penetration Testing da gennaio 2025. Sono convinto che la miglior difesa sia l’attacco. Simulo attacchi, analizzo vulnerabilità reali e progetto strumenti per migliorare la sicurezza aziendale. Ogni giorno imparo, anche leggendo report di attacchi recenti prima di dormire.
-    </p>
-  </section>
+  <main>
+    <section id="chi-sono" tabindex="-1" aria-hidden="true">
+      <h2>Chi Sono</h2>
+      <p>
+        Sono un professionista autodidatta con una forte focalizzazione pratica sulla cybersecurity offensiva. 
+        Ho seguito un percorso intensivo più di 2.000 ore di pratica partecipando a laboratori di HackTheBox e programmi di bug bounty, dove ho imparato a condurre ricognizione completa, exploit e analisi post-exploitation.
+      </p>
+      <p>
+        Il mio approccio inizia dalla raccolta di informazioni (whois, whatweb, Wayback Machine, LinkedIn) e prosegue con la ricognizione attiva (subfinder, waybackurls, httpx, ffuf) per identificare superfici d’attacco significative. 
+        Sono abituato a documentare le attività con PoC e report tecnici professionali.
+        Ho inoltre sviluppato abitudini di lavoro sostenibili (time-boxing, sessioni distribuite, priorità al sonno) per mantenere alta l’efficacia sul lungo periodo. Il mio obiettivo è entrare in un red team e contribuire a rafforzare la sicurezza aziendale con test realistici e reportazione di qualità.
+      </p>
+    </section>
 
-  <section id="competenze">
-    <h2>Competenze Tecniche</h2>
-    <ul>
-      <li>Recon: Subfinder, Amass, Gobuster, Dirsearch, DNSrecon, Nmap, theHarvester...</li>
-      <li>Exploiting: LFI, XSS, SQLi, Buffer Overflow con GDB</li>
-      <li>Tool: Burp Suite, sqlmap, Hydra, FFUF, Nikto, Metasploit, nuclei</li>
-      <li>Lingue: Python, Bash, SQL, C</li>
-      <li>Esperienza con HackTheBox, CTF e bug bounty</li>
-    </ul>
-  </section>
+    <section id="competenze" tabindex="-1" aria-hidden="true">
+      <h2>Competenze Tecniche</h2>
+      <ul>
+        <li>Recon: Subfinder, Amass, Gobuster, Dirsearch, DNSrecon, Nmap, theHarvester...</li>
+        <li>Exploiting: LFI, XSS, SQLi, Buffer Overflow con GDB</li>
+        <li>Tool: Burp Suite, sqlmap, Hydra, FFUF, Nikto, Metasploit, nuclei</li>
+        <li>Lingue: Python, Bash, SQL, C</li>
+        <li>Esperienza con HackTheBox, CTF e bug bounty</li>
+      </ul>
+    </section>
 
-  <section id="progetti">
-    <h2>Progetti</h2>
-    <ul>
-      <li> <strong>Rate Limit Bypass</strong> – Script Python multi-threading</li>
-      <li> <strong>DoS Payment System</strong> – Scoperta vulnerabilità e disclosure</li>
-      <li> <strong>Pepsi</strong> – Esposizione di endpoint GraphQL considerati privati, segnalata al team di sicurezza</li>
-      <li> <strong>CVE-2022-22720</strong> – Analisi tecnica e Proof of Concept di vulnerabilità DoS su Apache 2.4.52, con documentazione condivisa.</li>
-      <li> <strong>YesWeHack</strong> – Business Logic Errors: identificata una logica di acquisto che consentiva ordini con dati fittizi senza transazione reale; testato in ambiente controllato e documentato. Segnalazione inviata e validata</li>
-      <li> <strong>Ferrari</strong> – Business Logic Flaw: anomalia nel flusso d’ordine che mostrava elementi non pagati tra gli “ordini recenti”</li>
-      <li> <strong>Ferrari</strong> – Broken Access Control: possibilità di accedere a un programma riservato in condizioni controllate.</li>
+    <section id="nota" tabindex="-1" aria-hidden="true">
+      <h2>Nota</h2>
+      <p class="important-note">
+        Per motivi di sicurezza, non pubblico dettagli tecnici sfruttabili delle vulnerabilità. 
+        Su richiesta in fase di colloquio, posso mostrare documenti non sensibili che dimostrano 
+        l’approccio seguito e la qualità della documentazione tecnica.
+      </p>
+    </section>    
 
-      
-    </ul>
-  </section>
-  <section id="nota">
-   <h2>Nota</h2>
-     <p> 
-       Per motivi di sicurezza, non pubblico dettagli tecnici sfruttabili delle vulnerabilità. Su richiesta in fase di colloquio, posso mostrare documenti non sensibili che dimostrano l’approccio seguito e la qualità della documentazione tecnica.
-     </p>
-  </section>
-  <section id="contatti">
-    <h2>Contatti</h2>
-    <p>Email: <a href="mailto:mikimegov@gmail.com">mikimegov@gmail.com</a></p>
-    <p><a href="https://github.com/MicheleMessina-debug">GitHub</a> | <a href="https://www.linkedin.com/in/michele-messina-518a55278/">LinkedIn</a></p>
-  </section>
+    <section id="contatti" tabindex="-1" aria-hidden="true">
+      <h2>Contatti</h2>
+      <p>Email: <a href="mailto:mikimegov@gmail.com">mikimegov@gmail.com</a></p>
+      <p><a href="https://github.com/MicheleMessina-debug" target="_blank" rel="noopener">GitHub</a> | <a href="https://www.linkedin.com/in/michele-messina-518a55278/" target="_blank" rel="noopener">LinkedIn</a></p>
+    </section>
+  </main>
 
   <footer>
     <p>&copy; 2025 Michele Messina</p>
   </footer>
 </body>
 </html>
-
-
-
