@@ -1,1 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>Mio Podcast di Test</title>
+    <link>https://www.michelemessina.dev/</link>
+    <description>Feed RSS di test per redirect verso metadata</description>
 
+    <item>
+      <title>Test Episode</title>
+      <enclosure url="https://a7b9888d-e6c5-4763-b413-0a0912c11cfb.webhook.site/" length="0" type="audio/mpeg"/>
+      <guid>1</guid>
+      <pubDate>Sun, 08 Mar 2026 14:00:00 GMT</pubDate>
+      <description>Questo episodio punta al Webhook</description>
+    </item>
+
+  </channel>
+</rss>
